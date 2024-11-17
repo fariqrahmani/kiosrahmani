@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Belanja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Belanja</h1>
+        <div id="items">
+            <!-- Daftar barang akan di-generate dengan JavaScript -->
+        </div>
+        <h2 class="total">Total: Rp <span id="total">0</span></h2>
+        <button class="button" id="copyButton">Salin Total</button>
+    </div>
+
+    <script>
+        // Daftar barang
+        const barang = [
+            { kategori: "Makanan", nama: "Nasi Goreng", harga: 20000 },
+            { kategori: "Makanan", nama: "Sate Ayam", harga: 25000 },
+            { kategori: "Minuman", nama: "Teh Botol", harga: 5000 },
+            { kategori: "Minuman", nama: "Kopi", harga: 15000 },
+            { kategori: "Lainnya", nama: "Sabun", harga: 3000 },
+            { kategori: "Lainnya", nama: "Sikat Gigi", harga: 4000 }
+        ];
+
+        // Menampilkan barang di halaman
+        const itemsDiv = document.getElementById("items");
+        let total = 0;
+
+        barang.forEach((item, index) => {
+            const div = document.createElement("div");
+            div.classList.add("item");
+            div.innerHTML = `
+                <span>${item.nama} (Rp ${item.harga})</span>
+                <div>
+                    <button onclick="updateJumlah(${index}, -1)">-</button>
+                    <span id="jumlah-${index}">0</span>
+                    <button onclick="updateJumlah(${index}, 1)">+</button>
+                </div>
+            `;
+            itemsDiv.appendChild(div);
+        });
+
+        // Fungsi untuk memperbarui jumlah barang
+        function updateJumlah(index, delta) {
+            const jumlahSpan = document.getElementById(`jumlah-${index}`);
+            let jumlah = parseInt(jumlahSpan.textContent);
+            jumlah = Math.max(0, jumlah + delta);
+            jumlahSpan.textContent = jumlah;
+
+            // Hitung total
+            total = barang.reduce((sum, item, i) => {
+                const qty = parseInt(document.getElementById(`jumlah-${i}`).textContent);
+                return sum + qty * item.harga;
+            }, 0);
+
+            document.getElementById("total").textContent = total.toLocaleString();
+        }
+
+        // Fungsi untuk menyalin total ke clipboard
+        document.getElementById("copyButton").addEventListener("click", () => {
+            navigator.clipboard.writeText(`Total Belanja: Rp ${total.toLocaleString()}`);
+            alert("Total belanja telah disalin ke clipboard!");
+        });
+    </script>
+</body>
+</html>
