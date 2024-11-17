@@ -23,6 +23,10 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .category {
+            font-weight: bold;
+            margin-top: 20px;
+        }
         .item {
             display: flex;
             justify-content: space-between;
@@ -71,7 +75,18 @@
         const itemsDiv = document.getElementById("items");
         let total = 0;
 
+        let currentCategory = "";
         barang.forEach((item, index) => {
+            // Tambahkan header kategori jika berbeda dari kategori sebelumnya
+            if (item.kategori !== currentCategory) {
+                currentCategory = item.kategori;
+                const categoryHeader = document.createElement("div");
+                categoryHeader.classList.add("category");
+                categoryHeader.textContent = currentCategory;
+                itemsDiv.appendChild(categoryHeader);
+            }
+
+            // Tambahkan item barang
             const div = document.createElement("div");
             div.classList.add("item");
             div.innerHTML = `
@@ -103,7 +118,7 @@
 
         // Fungsi untuk menyalin total ke clipboard
         document.getElementById("copyButton").addEventListener("click", () => {
-            navigator.clipboard.writeText(`Total Belanja: Rp ${total.toLocaleString()}`);
+            navigator.clipboard.writeText(total);
             alert("Total belanja telah disalin ke clipboard!");
         });
     </script>
