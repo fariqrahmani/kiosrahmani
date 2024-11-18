@@ -1,36 +1,179 @@
-<style>
-    .item {
-        display: flex;
-        align-items: center; /* Untuk memastikan elemen vertikal sejajar */
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Belanja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    
+        h1, h2 {
+            text-align: center;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .category {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    
+        .item {
+            display: flex;
+            align-items: center; /* Agar teks dan tombol sejajar vertikal */
+            margin-bottom: 10px;
+        }
+    
+        .item span {
+            flex: 0 0 80%; /* Memberikan lebar relatif 80% untuk teks */
+            word-wrap: break-word; /* Mencegah teks keluar dari area */
+        }
+    
+        .item div {
+            flex: 0 0 20%; /* Memberikan lebar relatif 20% untuk tombol */
+            display: flex;
+            justify-content: space-around; /* Memberikan jarak antar tombol */
+        }
+    
+        button {
+            width: 30px; /* Ukuran tombol */
+            height: 30px;
+            font-size: 16px;
+            text-align: center;
+            line-height: 1; /* Agar teks di tengah tombol */
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%; /* Membuat tombol berbentuk lingkaran */
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #45a049;
+        }
+    
+        .total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+        }
+    
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        .button:hover {
+            background: #45a049;
+        }
+    </style>    
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Belanja Kios Rahmani</h1>
+        <div id="items">
+            <!-- Daftar barang akan di-generate dengan JavaScript -->
+        </div>
+        <h2 class="total">Total: Rp <span id="total">0</span></h2>
+        <button class="button" id="copyButton">Salin Total</button>
+    </div>
 
-    .item span {
-        flex: 0 0 80%; /* Lebar teks barang 80% */
-        word-wrap: break-word; /* Agar teks tidak keluar dari area */
-    }
+    <script>
+        // Daftar barang
+        const barang = [
+            { kategori: "Makanan Berat", nama: "Bento Nasi Ayam Blackpepper/Sambal Matah", harga: 16000 },
+            { kategori: "Makanan Berat", nama: "Nasi Bakar Ayam Suwir", harga: 12000 },
+            { kategori: "Makanan Berat", nama: "Nasi Kuning Orek Tempe Telor", harga: 12000 },
+            { kategori: "Jajanan Ringan", nama: "Roti Isi", harga: 3500 },
+            { kategori: "Jajanan Ringan", nama: "Beng Beng", harga: 6000 },
+            { kategori: "Jajanan Ringan", nama: "Good Time", harga: 2500 },
+            { kategori: "Jajanan Ringan", nama: "Sari Gandum", harga: 2500 },
+            { kategori: "Jajanan Ringan", nama: "Nissin Kelapa Ijo", harga: 2500 },
+            { kategori: "Jajanan Ringan", nama: "Gerry/Roma Malkist Abon", harga: 2000 },
+            { kategori: "Jajanan Ringan", nama: "Kacang Sukro", harga: 1500 },
+            { kategori: "Jajanan Ringan", nama: "Kacang Oven", harga: 1500 },
+            { kategori: "Jajanan Ringan", nama: "Pilus Garuda", harga: 1500 },
+            { kategori: "Jajanan Ringan", nama: "Mie Shorr", harga: 1500 },
+            { kategori: "Minuman", nama: "Susu Ultra Coklat/Vanilla/Freshmilk", harga: 7000 },
+            { kategori: "Minuman", nama: "Kapal Api Kopi Hitam Strong", harga: 6500 },
+            { kategori: "Minuman", nama: "Teh Kotak", harga: 5500 },
+            { kategori: "Minuman", nama: "Kopi Golda Capuccino", harga: 5000 },
+            { kategori: "Minuman", nama: "Teh Sosro", harga: 4500 },
+            { kategori: "Minuman", nama: "Isoplus Coco", harga: 4500 },
+            { kategori: "Lainnya", nama: "Le Minereale Botol", harga: 4000 },
+            { kategori: "Lainnya", nama: "Zacky Teh Lemon Asli", harga: 4500 },
+            { kategori: "Lainnya", nama: "Zacky Jus Mangga", harga: 5500 },
+            { kategori: "Lainnya", nama: "Spidol", harga: 8000 },
+            { kategori: "Lainnya", nama: "Tisu", harga: 5500 }
+        ];
 
-    .item div {
-        flex: 0 0 20%; /* Lebar tombol 20% */
-        display: flex;
-        justify-content: space-around; /* Memberikan jarak antar tombol */
-    }
+        // Menampilkan barang di halaman
+        const itemsDiv = document.getElementById("items");
+        let total = 0;
 
-    button {
-        width: 30px; /* Ukuran tombol */
-        height: 30px;
-        font-size: 16px;
-        text-align: center;
-        line-height: 1; /* Agar teks dalam tombol berada di tengah */
-        border: none;
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 50%;
-        cursor: pointer;
-    }
+        let currentCategory = "";
+        barang.forEach((item, index) => {
+            // Tambahkan header kategori jika berbeda dari kategori sebelumnya
+            if (item.kategori !== currentCategory) {
+                currentCategory = item.kategori;
+                const categoryHeader = document.createElement("div");
+                categoryHeader.classList.add("category");
+                categoryHeader.textContent = currentCategory;
+                itemsDiv.appendChild(categoryHeader);
+            }
 
-    button:hover {
-        background-color: #45a049;
-    }
-</style>
+            // Tambahkan item barang
+            const div = document.createElement("div");
+            div.classList.add("item");
+            div.innerHTML = `
+                <span>${item.nama} (Rp ${item.harga})</span>
+                <div>
+                    <button onclick="updateJumlah(${index}, -1)">-</button>
+                    <span id="jumlah-${index}">0</span>
+                    <button onclick="updateJumlah(${index}, 1)">+</button>
+                </div>
+            `;
+            itemsDiv.appendChild(div);
+        });
+
+        // Fungsi untuk memperbarui jumlah barang
+        function updateJumlah(index, delta) {
+            const jumlahSpan = document.getElementById(`jumlah-${index}`);
+            let jumlah = parseInt(jumlahSpan.textContent);
+            jumlah = Math.max(0, jumlah + delta);
+            jumlahSpan.textContent = jumlah;
+
+            // Hitung total
+            total = barang.reduce((sum, item, i) => {
+                const qty = parseInt(document.getElementById(`jumlah-${i}`).textContent);
+                return sum + qty * item.harga;
+            }, 0);
+
+            document.getElementById("total").textContent = total.toLocaleString();
+        }
+
+        // Fungsi untuk menyalin total ke clipboard
+        document.getElementById("copyButton").addEventListener("click", () => {
+            navigator.clipboard.writeText(total);
+            alert("Total belanja telah disalin ke clipboard!");
+        });
+    </script>
+</body>
+</html>
