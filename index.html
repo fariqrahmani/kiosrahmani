@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Belanja</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,31 +34,39 @@
     
         .item {
             display: flex;
-            align-items: center; /* Agar teks dan tombol sejajar vertikal */
+            align-items: center; /* Agar teks, angka, dan tombol sejajar vertikal */
             margin-bottom: 10px;
         }
     
         .item span {
-            flex: 0 0 80%; /* Memberikan lebar relatif 80% untuk teks */
+            flex: 0 0 70%; /* Memberikan lebar relatif 70% untuk teks */
             word-wrap: break-word; /* Mencegah teks keluar dari area */
         }
     
         .item div {
-            flex: 0 0 20%; /* Memberikan lebar relatif 20% untuk tombol */
+            flex: 0 0 30%; /* Memberikan lebar relatif 30% untuk kontrol tombol */
             display: flex;
-            justify-content: space-around; /* Memberikan jarak antar tombol */
+            align-items: center;
+            justify-content: space-between; /* Memberikan jarak antar tombol */
+        }
+    
+        .item div span {
+            width: 40px; /* Lebar angka */
+            text-align: center; /* Angka berada di tengah */
+            font-size: 16px;
         }
     
         button {
-            width: 30px; /* Ukuran tombol */
-            height: 30px;
-            font-size: 16px;
-            text-align: center;
-            line-height: 1; /* Agar teks di tengah tombol */
-            border: none;
-            background-color: #4CAF50;
+            display: inline-block; /* Agar ukuran tombol mengikuti panjang teks */
+            background: #4CAF50;
             color: white;
+            padding: 10px 20px; /* Memberikan padding agar teks terlihat nyaman */
+            font-size: 16px; /* Ukuran font yang sesuai */
+            border: none;
+            border-radius: 5px; /* Membuat sudut tombol melengkung */
             cursor: pointer;
+            text-align: center;
+            white-space: nowrap; /* Mencegah teks tombol terpotong */
         }
     
         button:hover {
@@ -68,8 +77,22 @@
             font-size: 1.5rem;
             font-weight: bold;
             text-align: right;
-        }    
-    </style>    
+        }
+    
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        .button:hover {
+            background: #45a049;
+        }
+    </style> 
+
 </head>
 <body>
     <div class="container">
