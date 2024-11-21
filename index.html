@@ -34,39 +34,38 @@
     
         .item {
             display: flex;
-            align-items: center; /* Agar teks, angka, dan tombol sejajar vertikal */
-            margin-bottom: 10px;
+            justify-content: space-between; /* Memisahkan nama barang dan kontrol tombol */
+            align-items: center;
+            margin-bottom: 20px; /* Jarak antar item */
         }
     
-        .item span {
-            flex: 0 0 70%; /* Memberikan lebar relatif 70% untuk teks */
-            word-wrap: break-word; /* Mencegah teks keluar dari area */
+        .item-details {
+            flex: 1; /* Nama barang mengambil sisa ruang */
         }
     
-        .item div {
-            flex: 0 0 30%; /* Memberikan lebar relatif 30% untuk kontrol tombol */
+        .controls {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Memberikan jarak antar tombol */
+            gap: 10px; /* Memberikan jarak antar elemen */
         }
     
-        .item div span {
+        .controls span {
             width: 40px; /* Lebar angka */
             text-align: center; /* Angka berada di tengah */
             font-size: 16px;
         }
     
         button {
-            display: inline-block; /* Agar ukuran tombol mengikuti panjang teks */
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px; /* Memberikan padding agar teks terlihat nyaman */
-            font-size: 16px; /* Ukuran font yang sesuai */
-            border: none;
-            border-radius: 5px; /* Membuat sudut tombol melengkung */
-            cursor: pointer;
+            width: 40px; /* Lebar tombol */
+            height: 40px; /* Tinggi tombol */
+            font-size: 16px; /* Ukuran teks tombol */
             text-align: center;
-            white-space: nowrap; /* Mencegah teks tombol terpotong */
+            line-height: 1.5;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px; /* Sudut tombol melengkung */
+            cursor: pointer;
         }
     
         button:hover {
@@ -82,16 +81,17 @@
         .button {
             background: #4CAF50;
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
     
         .button:hover {
             background: #45a049;
         }
-    </style> 
+    </style>  
 
 </head>
 <body>
@@ -152,11 +152,13 @@
             const div = document.createElement("div");
             div.classList.add("item");
             div.innerHTML = `
-                <span>${item.nama} (Rp ${item.harga})</span>
-                <div>
-                    <button onclick="updateJumlah(${index}, -1)">-</button>
-                    <span id="jumlah-${index}">0</span>
-                    <button onclick="updateJumlah(${index}, 1)">+</button>
+                <div class="item-details">
+                    <span>${item.nama} (Rp ${item.harga})</span>
+                    <div class="controls">
+                        <button onclick="updateJumlah(${index}, -1)">-</button>
+                        <span id="jumlah-${index}">0</span>
+                        <button onclick="updateJumlah(${index}, 1)">+</button>
+                    </div>
                 </div>
             `;
             itemsDiv.appendChild(div);
